@@ -19,10 +19,11 @@ BIRD_HEIGHT = 24
 
 function PlayState:init()
     sounds['music']:play()
-    self.bird = Bird()
-    self.pipePairs = {}
+
     self.timer = 0
-    self.score = 0
+    if fromStart then
+        score = 0
+    end
 
     -- initialize our last recorded Y value for a gap placement to base other gaps off of
     self.lastY = -PIPE_HEIGHT + math.random(80) + 20
@@ -46,7 +47,7 @@ function PlayState:update(dt)
         self.lastY = y
 
         -- add a new pipe pair at the end of the screen at our new Y
-        table.insert(self.pipePairs, PipePair(y))
+        table.insert(pipePairs, PipePair(y))
 
         -- reset timer
         self.timer = 0
@@ -56,12 +57,12 @@ function PlayState:update(dt)
     end
 
     -- for every pair of pipes..
-    for k, pair in pairs(self.pipePairs) do
+    for k, pair in pairs(pipePairs) do
         -- score a point if the pipe has gone past the bird to the left all the way
         -- be sure to ignore it if it's already been scored
         if not pair.scored then
-            if pair.x + PIPE_WIDTH < self.bird.x then
-                self.score = self.score + 1
+            if pair.x + PIPE_WIDTH < bird.x then
+                score = score + 1
                 pair.scored = true
                 sounds['score']:play()
             end
@@ -75,55 +76,54 @@ function PlayState:update(dt)
     -- modifying the table in-place without explicit keys will result in skipping the
     -- next pipe, since all implicit keys (numerical indices) are automatically shifted
     -- down after a table removal
-    for k, pair in pairs(self.pipePairs) do
+    for k, pair in pairs(pipePairs) do
         if pair.remove then
-            table.remove(self.pipePairs, k)
+            table.remove(pipePairs, k)
         end
     end
 
     -- simple collision between bird and all pipes in pairs
-    for k, pair in pairs(self.pipePairs) do
+    for k, pair in pairs(pipePairs) do
         for l, pipe in pairs(pair.pipes) do
-            if self.bird:collides(pipe) then
+            if bird:collides(pipe) then
                 sounds['explosion']:play()
                 sounds['hurt']:play()
 
                 gStateMachine:change('score', {
-                    score = self.score
+                    score = score
                 })
             end
         end
     end
 
     -- update bird based on gravity and input
-    self.bird:update(dt)
+    bird:update(dt)
 
     -- reset if we get to the ground
-    if self.bird.y > VIRTUAL_HEIGHT - 15 then
+    if bird.y > VIRTUAL_HEIGHT - 15 then
         sounds['explosion']:play()
         sounds['hurt']:play()
 
         gStateMachine:change('score', {
-            score = self.score
+            score = score
         })
     end
    
     if love.keyboard.wasPressed('p') then
-        sounds['pause']:play()
         gStateMachine:change('pause')
     end
 
 end
 
 function PlayState:render()
-    for k, pair in pairs(self.pipePairs) do
+    for k, pair in pairs(pipePairs) do
         pair:render()
     end
 
     love.graphics.setFont(flappyFont)
-    love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
+    love.graphics.print('Score: ' .. tostring(score), 8, 8)
 
-    self.bird:render()
+    bird:render()
 end
 
 --[[

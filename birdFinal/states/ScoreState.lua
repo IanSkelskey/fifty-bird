@@ -18,8 +18,13 @@ local GOLD_IMAGE = love.graphics.newImage('gold.png')
 local SILVER_IMAGE = love.graphics.newImage('silver.png')
 local BRONZE_IMAGE = love.graphics.newImage('bronze.png')
 
+function ScoreState:init()
+    fromStart = true
+    scrolling = true
+end
+
 function ScoreState:enter(params)
-    self.score = params.score
+    score = params.score
 end
 
 function ScoreState:update(dt)
@@ -32,12 +37,12 @@ end
 function ScoreState:render()
     -- simply render the score to the middle of the screen
 
-    if self.score > 9 then
+    if score > 9 then
         love.graphics.setFont(flappyFont)
         love.graphics.printf('GOLD', 0, 32, VIRTUAL_WIDTH, 'center')
         GOLD_IMAGE:setFilter("nearest","nearest")
         love.graphics.draw(GOLD_IMAGE, VIRTUAL_WIDTH/2 - 32, 80, 0, 4, 4)
-    elseif self.score > 4 then
+    elseif score > 4 then
         love.graphics.setFont(flappyFont)
         love.graphics.printf('SILVER', 0, 32, VIRTUAL_WIDTH, 'center')
         SILVER_IMAGE:setFilter("nearest","nearest")
@@ -50,6 +55,11 @@ function ScoreState:render()
     end
 
     love.graphics.setFont(mediumFont)
-    love.graphics.printf('Score: ' .. tostring(self.score), 0, VIRTUAL_HEIGHT - 112, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('Score: ' .. tostring(score), 0, VIRTUAL_HEIGHT - 112, VIRTUAL_WIDTH, 'center')
     love.graphics.printf('Press Enter to Play Again!', 0, VIRTUAL_HEIGHT - 48, VIRTUAL_WIDTH, 'center')
+end
+
+function ScoreState:exit()
+    scrolling = true
+    
 end

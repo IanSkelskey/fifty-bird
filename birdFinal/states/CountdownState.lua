@@ -14,8 +14,16 @@ CountdownState = Class{__includes = BaseState}
 COUNTDOWN_TIME = 0.75
 
 function CountdownState:init()
+
+    if fromStart then
+        bird = Bird()
+        pipePairs = {}
+        else
+            scrolling = false
+    end
     self.count = 3
     self.timer = 0
+
 end
 
 --[[
@@ -40,6 +48,15 @@ function CountdownState:update(dt)
 end
 
 function CountdownState:render()
+    if fromStart == false then
+        for k, pair in pairs(pipePairs) do
+            pair:render()
+        end
+        love.graphics.setFont(flappyFont)
+        love.graphics.print('Score: ' .. tostring(score), 8, 8)
+        bird:render()
+
+    end
     -- render count big in the middle of the screen
     love.graphics.setFont(hugeFont)
     love.graphics.printf(tostring(self.count), 0, 120, VIRTUAL_WIDTH, 'center')
