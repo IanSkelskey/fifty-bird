@@ -13,7 +13,7 @@ require 'states/PlayState'
 function PauseState:init()
     fromStart = false
     
-    sounds['music']:pause()
+    sounds['music']:setVolume(0.5)
 end
 
 function PauseState:update(dt)
@@ -49,7 +49,7 @@ end
     Called when this state changes to another state.
 ]]
 function PauseState:exit()
-
+    sounds['music']:setVolume(1)
     -- stop scrolling for the death/score screen
     scrolling = true
     

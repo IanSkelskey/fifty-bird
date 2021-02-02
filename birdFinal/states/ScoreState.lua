@@ -37,21 +37,24 @@ end
 function ScoreState:render()
     -- simply render the score to the middle of the screen
 
-    if score > 9 then
+    if score > 14 then
         love.graphics.setFont(flappyFont)
         love.graphics.printf('GOLD', 0, 32, VIRTUAL_WIDTH, 'center')
         GOLD_IMAGE:setFilter("nearest","nearest")
         love.graphics.draw(GOLD_IMAGE, VIRTUAL_WIDTH/2 - 32, 80, 0, 4, 4)
-    elseif score > 4 then
+    elseif score > 9 then
         love.graphics.setFont(flappyFont)
         love.graphics.printf('SILVER', 0, 32, VIRTUAL_WIDTH, 'center')
         SILVER_IMAGE:setFilter("nearest","nearest")
         love.graphics.draw(SILVER_IMAGE, VIRTUAL_WIDTH/2 - 32, 80, 0, 4, 4)
-    else
+    elseif score > 4 then
         love.graphics.setFont(flappyFont)
         love.graphics.printf('BRONZE', 0, 32, VIRTUAL_WIDTH, 'center')
         BRONZE_IMAGE:setFilter("nearest","nearest")
         love.graphics.draw(BRONZE_IMAGE, VIRTUAL_WIDTH/2 - 32, 80, 0, 4, 4)
+    else
+        love.graphics.setFont(flappyFont)
+        love.graphics.printf('No medal this time. Keep trying!', 0, 32, VIRTUAL_WIDTH, 'center')
     end
 
     love.graphics.setFont(mediumFont)

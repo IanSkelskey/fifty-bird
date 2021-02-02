@@ -57,6 +57,7 @@ fromStart = true
 score = 0
 bird = Bird()
 pipePairs = {}
+mute = false
 
 local background = love.graphics.newImage('background.png')
 local backgroundScroll = 0
@@ -93,12 +94,15 @@ function love.load()
         ['hurt'] = love.audio.newSource('hurt.wav', 'static'),
         ['score'] = love.audio.newSource('score.wav', 'static'),
         ['pause'] = love.audio.newSource('pause.wav', 'static'),
+        ['count'] = love.audio.newSource('countTick.wav', 'static'),
+        ['go'] = love.audio.newSource('countGo.wav', 'static'),
 
         -- https://freesound.org/people/xsgianni/sounds/388079/
         ['music'] = love.audio.newSource('marios_way.mp3', 'static')
     }
 
     -- kick off music
+
     sounds['music']:setLooping(true)
     sounds['music']:play()
 
@@ -176,10 +180,10 @@ end
 
 function love.draw()
     push:start()
-    
-        love.graphics.draw(background, -backgroundScroll, 0)
+ love.graphics.draw(background, -backgroundScroll, 0)
         gStateMachine:render()
         love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
+
 
     push:finish()
 end

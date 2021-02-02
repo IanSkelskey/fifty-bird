@@ -55,4 +55,11 @@ end
 
 function Bird:render()
     love.graphics.draw(self.image, self.x, self.y)
+    --PRELIMINARY TESTING FOR BIRD ROTATION
+    --NEED A LARGER GRAPHIC TO PREVENT DISTORTION
+    --if bird.dy < 0 then
+    --    love.graphics.draw(self.image, self.x, self.y, -math.pi/8)
+    --else
+    --    love.graphics.draw(self.image, self.x, self.y, math.pi/8)
+    --end
 end

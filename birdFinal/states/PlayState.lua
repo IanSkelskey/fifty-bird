@@ -85,7 +85,7 @@ function PlayState:update(dt)
     -- simple collision between bird and all pipes in pairs
     for k, pair in pairs(pipePairs) do
         for l, pipe in pairs(pair.pipes) do
-            if bird:collides(pipe) then
+            if bird:collides(pipe) or (bird.y < 0 and (bird.x + bird.width) > pipe.x)  then
                 sounds['explosion']:play()
                 sounds['hurt']:play()
 
@@ -130,6 +130,7 @@ end
     Called when this state is transitioned to from another state.
 ]]
 function PlayState:enter()
+    sounds['go']:play()
     -- if we're coming from death, restart scrolling
     scrolling = true
 end
